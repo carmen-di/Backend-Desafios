@@ -7,8 +7,8 @@ export const apiRouter = Router()
 apiRouter.use(express.json())
 apiRouter.use(express.urlencoded({ extended: true }))
 
-apiRouter.use('./products', productRouter)
-apiRouter.use('./cart', cartRouter)
+apiRouter.use("/products", productRouter)
+apiRouter.use("/cart", cartRouter)
 
 apiRouter.use((error, req, res, next) => {
     switch (error.message) {

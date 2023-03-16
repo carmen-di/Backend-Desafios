@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { ProductManager } from "../ProductManager.js"
+import { Product, ProductManager } from "../ProductManager.js"
 import { randomUUID } from "crypto"
 
 export const productRouter = Router()
@@ -44,8 +44,8 @@ productRouter.get('/:pid', async (req, res, next) => {
 
 productRouter.post('/', async (req, res, next) => {
     try {
-        const producto = new ProductManager ({id: randomUUID(), ...req.body})
-        const add = await prod.addProduct(producto)
+        const producto = new Product ({id: randomUUID(), ...req.body})
+        const add = await prod.save(producto)
         res.json(add)
     }
     catch (error) {

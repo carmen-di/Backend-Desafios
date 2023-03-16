@@ -1,53 +1,52 @@
 import fs from 'fs'
 
+export class Product {
+    constructor({title, description, price, id, thumbnail, code, stock, category}) {
+        this.title = title;
+        this.description = description;
+        this.price = price;
+        this.thumbnail = [thumbnail];
+        this.code = code;
+        this.stock = stock;
+        this.category = category;
+        this.id = id;
+    }
+}
+
 export class ProductManager {
+    #path
+    #productos
     
     constructor(path) {
-        this.path = path;
+        this.#path = path;
+        this.#productos = []
     }
 
-    async addProduct(prodNuevo) {
-        const products = await this.getProducts();
-        const codeOk = products.some((product) => prodNuevo.code === product.code)
+    async #read() {
+        const json = await fs.promises.readFile(this.#path, 'utf-8')
+        this.#productos = JSON.parse(json)
+    }
 
-        if (codeOk) {
-            return console.log("Ingrese otro code")
-        } else {
-            if (prodNuevo.title && prodNuevo.description && prodNuevo.price && prodNuevo.thumbnail && prodNuevo.code && prodNuevo.stock) {
-                const newProduct = {
-                    title: prodNuevo.title,
-                    description: prodNuevo.description,
-                    price: prodNuevo.price,
-                    thumbnail: prodNuevo.thumbnail,
-                    stock: prodNuevo.stock,
-                    code: prodNuevo.code,
-                    id: products.length + 1
-                }
-				products.push(newProduct)
-                await fs.promises.writeFile(this.path, JSON.stringify(products, null, 2))
-                console.log("Producto agregado correctamente")
-				return newProduct
-			} else {
-				return console.log("Ingrese todos los campos")
-			}
-        }
+    async #write() {
+        const newProduct = JSON.stringify(this.#productos, null, 2)
+        await fs.promises.writeFile(this.#path, newProduct)
+    }
+
+    async save(productos) {
+        await this.#read()
+        this.#productos.push(productos)
+        await this.#write()
+        return productos
     }
 
     async getProducts() {
-        if (fs.existsSync(this.path)) {
-            const data = await fs.promises.readFile(this.path, 'utf-8');
-            console.log(data);
-            const products = JSON.parse(data);
-            return products;
-        }
-        else{
-            return [] 
-        }
+        await this.#read()
+        return this.#productos
     }
-    
+
     async getProductById(id) {
-        const productos = await this.getProducts()
-        const productFind = productos.find((product) => product.id === id)
+        await this.#read()
+        const productFind = this.#productos.find((product) => product.id === id)
         if (!productFind) {
             console.log("Not found")
         } else {
@@ -56,27 +55,26 @@ export class ProductManager {
     }
 
     async updateProduct(id, upProduct) {
-        const productos = await this.getProducts()
-        const productIndex = productos.findIndex((product) => product.id === id);
+        await this.#read()
+        const productIndex = this.#productos.findIndex((product) => product.id === id);
         if (productIndex === -1) {
             console.log("Not found")
         } else {
-            productos[productIndex] = {...upProduct, id}
-            await fs.promises.writeFile(this.path, JSON.stringify(productos, null, 2))
+            this.#productos[productIndex] = {...upProduct, id}
+            await this.#write()
             console.log("Producto actualizado correctamente")
         }
     }
 
+    
     async deleteProduct(id) {
-        const products = await this.getProducts();
-        const productEliminar = products.findIndex((product) => product.id === id);
-
+        await this.#read()
+        const productEliminar = this.#productos.findIndex((product) => product.id === id);
         if (productEliminar === -1) {
             console.log("Not found")
-        } else {
-            products.splice(productEliminar, 1)
-            await fs.promises.writeFile(this.path, JSON.stringify(products, null, 2))
-            console.log("Producto eliminado correctamente")
-        }
+        } 
+        const [eliminar] = this.#productos.splice(productEliminar, 1)
+        await this.#write()
+        return eliminar
     }
 }

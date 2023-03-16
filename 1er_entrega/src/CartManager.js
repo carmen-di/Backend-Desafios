@@ -1,44 +1,67 @@
 import fs from 'fs';
-import { randomUUID } from 'crypto';
+import { ProductManager } from "./ProductManager.js"
+
+export class Cart {
+    constructor({ id, products }) {
+        this.id = id
+        this.products = products
+    }
+}
 
 export class CartManager {
 
+    #path
+    #carts
     constructor(path) {
-        this.carts;
-        this.path = path;
+        this.#path = path;
+        this.#carts = []
     }
 
-    async read() {
-        const data = await fs.promises.readFile(this.path, "utf-8");
-        this.carts = JSON.parse(data);
+    async #read() {
+        const json = await fs.promises.readFile(this.#path, 'utf-8')
+        this.#carts = JSON.parse(json)
+    }
+
+    async #write() {
+        const newCart = JSON.stringify(this.#carts, null, 2)
+        await fs.promises.writeFile(this.#path, newCart)
+    }
+
+    async save(cart) {
+        await this.#read()
+        this.#carts.push(cart)
+        await this.#write()
+        return cart
     }
 
     async getCarts() {
-        await this.read();
-        return this.carts;
-    }
-
-    async createCart(product) {
-        await this.getCarts()
-        const cart = [{"id":randomUUID(), }]
-        cart.push(product)
-        this.carts.push(cart)
-        const jsonCarts = JSON.stringify(this.carts, null, 2)
-        await fs.promises.writeFile(this.path, jsonCarts)
-        
+        await this.#read()
+        return this.#carts
     }
     
-    async getCartProdtById(id) {
-        const carrito = await this.getCarts()
-        const carritoFind = carrito.find((product) => product.id === id)
-        if (!carritoFind) {
+    async getCartById(id) {
+        await this.#read()
+        const cartFind = this.#carts.find((carts) => carts.id === id)
+        if (!cartFind) {
             console.log("Not found")
         } else {
-            return carritoFind
+            return cartFind
         }
     }
     
-    async addProductToCart(id, productId) { // Falta implementar
+    async addProductToCart(cartId, productId) {
+        await this.getCarts()
+        const { cart } = await this.#carts.getCartById(cartId)
+        const { prod } = await ProductManager.getProductById(productId)
 
+        const productFind = cart.products.find(id => id.product == prod.id)
+        if (productFind !== -1) {
+            ++cart.products[productFind].quantity
+            await this.#write()
+        } 
+        return {
+            status_code: SUCCESS.INCREASE_QUANTITY.STATUS,
+            productAdded: cart.products[productFind]
+        }
     }
 }

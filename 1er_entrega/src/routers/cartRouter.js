@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { CartManager } from "../CartManager.js";
+import { Cart, CartManager } from "../CartManager.js";
 import { ProductManager } from "../ProductManager.js"
 import { randomUUID } from "crypto"
 
@@ -10,8 +10,8 @@ const prod = new ProductManager('./database/products.json')
 
 cartRouter.get('/', async (req, res, next) => {
     try {
-        const carrito = await cart.getCarts
-        res.json(carrito)
+        const carr = await cart.getCarts()
+        res.json(carr)
     }
     catch (error) {
         next(error)
@@ -20,7 +20,7 @@ cartRouter.get('/', async (req, res, next) => {
 
 cartRouter.get('/:cid', async (req, res, next) => {
     try {
-        const cartById = await cart.getCartProdtById(req.params.cid)
+        const cartById = await cart.getCartById(req.params.cid)
         res.json(cartById)
     } 
     catch (error) {
@@ -30,11 +30,11 @@ cartRouter.get('/:cid', async (req, res, next) => {
 
 cartRouter.post('/', async (req, res, next) => {
     try {
-        const carrito = new CartContainer({
+        const carrito = new Cart({
             products: [],
             id: randomUUID()
         })
-        const agregar = await cart.createCart(carrito)
+        const agregar = await cart.save(carrito)
         res.json(agregar)
     } catch (error) {
         next(error)
@@ -44,7 +44,7 @@ cartRouter.post('/', async (req, res, next) => {
 cartRouter.post('/:cid/product/:pid', async (req, res, next) => {
     try {
         const {cid, pid} = req.params
-        const product = await cart.getCartProdtById(pid)
+        const product = await prod.getProductById(pid)
         if (product.id) {
             const cart = await cart.addProductToCart(cid, pid)
             res.json(cart)
