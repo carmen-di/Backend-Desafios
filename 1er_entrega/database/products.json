@@ -34,5 +34,18 @@
     "stock": 10,
     "category": "collares",
     "id": "5faeeedd-5612-4c01-b8fb-8224b7c231d6"
+  },
+  {
+    "title": "Anillo Emily",
+    "description": "Anillo",
+    "price": 9800,
+    "thumbnail": [
+      [
+        null
+      ]
+    ],
+    "code": "code",
+    "stock": 10,
+    "category": "anillo"
   }
 ]

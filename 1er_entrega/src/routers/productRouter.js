@@ -28,13 +28,16 @@ productRouter.get('/', async (req, res, next) => {
 
 productRouter.get('/:pid', async (req, res, next) => {
     try {
-        const id = parseInt(req.params.pid)
-        const productById = await prod.getProductById(id)
-
-        if (!productById) {
-            res.json({error: 'El producto no existe'})
-        } else {
-            res.json(productById)
+        const idProducto = req.params.pid
+        const poductosLeidos = await prod.getProducts()
+    
+        if (idProducto) {
+            let filtrado = poductosLeidos.find((prod) => prod.id === idProducto)
+            if (filtrado) {
+                res.send(filtrado)
+            } else {
+                throw new Error("no existe el id")
+            }
         }
     } 
     catch (error) {
@@ -44,8 +47,9 @@ productRouter.get('/:pid', async (req, res, next) => {
 
 productRouter.post('/', async (req, res, next) => {
     try {
-        const producto = new Product ({id: randomUUID(), ...req.body})
-        const add = await prod.save(producto)
+        await prod.getProducts()
+        const producto = new Product ({ ...req.body, id: randomUUID()})
+        const add = await prod.addProduct(producto.title, producto.description, producto.price, producto.thumbnail, producto.stock, producto.code, producto.category)
         res.json(add)
     }
     catch (error) {

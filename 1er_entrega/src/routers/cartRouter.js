@@ -41,17 +41,13 @@ cartRouter.post('/', async (req, res, next) => {
     }
 })
 
-cartRouter.post('/:cid/product/:pid', async (req, res, next) => {
+cartRouter.post('/:cid/products/:pid', async (req, res, next) => {
     try {
-        const {cid, pid} = req.params
-        const product = await prod.getProductById(pid)
-        if (product.id) {
-            const cart = await cart.addProductToCart(cid, pid)
-            res.json(cart)
-            return
-        }
-        res.json({ msg: `El producto con el id ${pid} no existe.` })
-    } catch (error) {
+        const cartId = req.params.cid
+        const productId = req.params.pid
+        const add = cart.addProductToCart(cartId, productId)
+        res.json(add)
+    } catch(error) {
         next(error)
     }
 })
