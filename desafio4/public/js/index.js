@@ -1,6 +1,6 @@
 const serverSocket = io('http://localhost:8080/')
 
-const boton = document.querySelector('#boton')
+const boton = document.querySelector('#btnEnviar')
 
 if (boton) {
     boton.addEventListener('click', evento => {

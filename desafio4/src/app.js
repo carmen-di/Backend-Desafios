@@ -23,7 +23,7 @@ const io = new SocketIOServer(httpServer)
 io.on('connection', async clientSocket => {
     console.log('Cliente conectado')
     clientSocket.on('nuevoProducto', async producto => {
-        await productsManager.guardar(producto)
+        await productsManager.save(producto)
         const data = await productsManager.getProducts()
         const productos = data.map(m => ({ ...m }))
         io.sockets.emit('actualizarProductos', productos)
