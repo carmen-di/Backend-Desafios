@@ -1,0 +1,29 @@
+<h1>Videojuegos</h1>
+<form id="formCargarVideojuego">
+    <label for="input_nombre">Nombre</label> <input id="input_nombre" name="nombre" type="text"
+        placeholder="ingrese nombre"><br>
+    <label for="input_genero">Genero</label> <input id="input_genero" name="genero" type="text"
+        placeholder="ingrese genero"><br>
+    <label for="input_plataforma">Plataforma</label> <input id="input_plataforma" name="plataforma" type="text"
+        placeholder="ingrese plataforma"><br>
+    <button type="submit">Guardar</button>
+</form>
+
+<h2>Listado de juegos disponibles</h2>
+<div id="listado">
+    {{#if hayVideojuegos}}
+    <ul>
+        {{#each videojuegos}}
+        <li>Nombre: {{this.nombre}} | genero: {{this.genero}} | Plataforma: {{this.plataforma}}</li>
+        {{/each}}
+    </ul>
+    {{else}}
+    <p>no hay videojuegos para mostrar</p>
+    {{/if}}
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"
+    integrity="sha512-RNLkV3d+aLtfcpEyFG8jRbnWHxUqVZozacROI4J2F1sTaDqo1dPQYs01OMi1t1w9Y2FdbSCDSQ2ZVdAC8bzgAg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="/js/cargaVideojuegos.js"></script>
