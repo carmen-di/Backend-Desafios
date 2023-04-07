@@ -1,0 +1,29 @@
+<h1>Messages</h1>
+<form id="formChat" method="post">
+    <div>
+        <label for="inputUser">User</label>
+        <input id="inputUser" name="user" type="text" placeholder="Ingrese su Usuario">
+    </div>
+    <div>
+        <label for="inputMensaje">Message</label>
+        <input id="inputMensaje" name="message" type="text" placeholder="Ingrese su mensaje">
+    </div>
+    <button type="submit">Enviar Mensaje</button>
+</form>
+
+<div id="messages">
+    {{#if hayMensajes }}
+    <ul>
+        {{#each mensajes}}
+        <li>
+            <h5>{{this.user}}: {{this.message}}</h5>
+        </li>
+        {{/each}}
+    </ul>
+    {{else}}
+    <p>no hay mensajes...</p>
+    {{/if}}
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/index.js"></script>

@@ -1,19 +1,41 @@
 import { Router } from 'express';
-import { videojuegosManager } from '../managers/videojuegos.manager.js';
+import mongoose from "mongoose"
 
-export const routerVistas = Router();
+export const viewsRouter = Router()
 
-routerVistas.get('/', (req, res, next) => {
-    res.redirect('/videojuegos');
-});
+viewsRouter.use(express.json())
+viewsRouter.use(express.urlencoded({ extended: true }))
 
-routerVistas.get('/videojuegos', async (req, res, next) => {
+viewsRouter.get('/', async (req, res) => {
+    const productosDb = mongoose.connection.db.collection('products')
+    const productos = await productosDb.find().toArray()
+    res.render('index', {
+        productos: productos,
+        title: 'Productos'
+    })
+})
 
-    const videojuegos = await videojuegosManager.obtenerTodos()
+viewsRouter.get('/realtimeproducts', async (req, res) => {
+    try {
+        const productosDb = mongoose.connection.db.collection('products')
+        const list = await productosDb.find().toArray()
+        
+        res.render("realtimeproducts", {
+            title: "Real Time Products",
+            list: list,
+            showList: list.length > 0
+        })
+    } catch (error) {
+        return next(error)
+    }
+})
 
-    res.render('videojuegos', {
-        pageTitle: 'Videojuegos',
-        hayVideojuegos: videojuegos.length > 0,
-        videojuegos
-    });
-});
+viewsRouter.get('/chat', async (req, res) => {
+    const mensajesDb = mongoose.connection.db.collection('messages')
+    const mensajes = await mensajesDb.find().toArray()
+    res.render('chat', {
+        mensajes: mensajes,
+        hayMensajes: mensajes.length > 0,
+        title: 'Chat'
+    })
+})
