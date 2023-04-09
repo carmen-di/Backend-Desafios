@@ -1,10 +1,9 @@
 import { Router } from "express";
-import { Product, ProductManager } from "../ProductManager.js"
+import { Product } from "../entidades/Product.js"
+import { prod } from "../dao/mongo/managers/productos.manager.js"
 import { randomUUID } from "crypto"
 
 export const productRouter = Router()
-
-const prod = new ProductManager('./database/products.json')
 
 productRouter.get('/', async (req, res, next) => {
     try {

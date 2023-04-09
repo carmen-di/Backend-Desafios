@@ -1,41 +1,57 @@
 import { Router } from 'express';
-import mongoose from "mongoose"
+import { prod } from '../dao/mongo/managers/products.manager';
+import { menMan } from '../dao/mongo/managers/messages.manager'
+//import mongoose from "mongoose"
+
+const RENDER_PATH = {
+    STATIC: 'index.handlebars',
+    REAL_TIME_PRODUCTS: 'realTimeProducts.handlebars',
+    MESSAGES: 'chat.handlebars'
+}
 
 export const viewsRouter = Router()
 
-viewsRouter.use(express.json())
-viewsRouter.use(express.urlencoded({ extended: true }))
+viewsRouter
+    .get('/', async (req, res, next) => {
+        try {
+            const productList = await prod.getProducts()
 
-viewsRouter.get('/', async (req, res) => {
-    const productosDb = mongoose.connection.db.collection('products')
-    const productos = await productosDb.find().toArray()
-    res.render('index', {
-        productos: productos,
-        title: 'Productos'
+            res.render(RENDER_PATH.STATIC, {
+                headerTitle: 'Home | Products',
+                mainTitle: 'List of products',
+                list: [...productList],
+                listExist: productList.length > 0
+            })
+        } catch (error) {
+            return next(error.message)
+        }
     })
-})
 
-viewsRouter.get('/realtimeproducts', async (req, res) => {
-    try {
-        const productosDb = mongoose.connection.db.collection('products')
-        const list = await productosDb.find().toArray()
-        
-        res.render("realtimeproducts", {
-            title: "Real Time Products",
-            list: list,
-            showList: list.length > 0
-        })
-    } catch (error) {
-        return next(error)
-    }
-})
+    .get('/realtimeproducts', async (req, res, next) => {
+        try {
+            const productList = await prod.getProducts()
 
-viewsRouter.get('/chat', async (req, res) => {
-    const mensajesDb = mongoose.connection.db.collection('messages')
-    const mensajes = await mensajesDb.find().toArray()
-    res.render('chat', {
-        mensajes: mensajes,
-        hayMensajes: mensajes.length > 0,
-        title: 'Chat'
+            res.render(RENDER_PATH.REAL_TIME_PRODUCTS, {
+                headerTitle: 'Home | Products',
+                mainTitle: 'List of products in Real Time',
+                list: [...productList],
+                showList: productList.length > 0
+            })
+        } catch (error) {
+            return next(error.message)
+        }
     })
-})
+
+    .get('/messages', async (req, res, next) => {
+        try {
+            const messages = await menMan.getMessages()
+            console.log(messages)
+
+            res.render(RENDER_PATH.MESSAGES, {
+                headerTitle: 'Home | Products',
+                mainTitle: 'List of messages'
+            })
+        } catch (error) {
+            return next(error.message)
+        }
+    })
