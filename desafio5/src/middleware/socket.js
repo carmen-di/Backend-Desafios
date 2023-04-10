@@ -1,5 +1,5 @@
-import { io } from '../app.js'
-import { prod } from "../dao/mongo/managers/productos.manager.js"
+import { io } from "../app/servidor.js"
+import { prod } from "../dao/mongo/managers/products.manager.js"
 import { menMan } from "../dao/mongo/managers/messages.manager.js"
 
 export async function socketHandle(req, res, next) {

@@ -1,4 +1,4 @@
-import { Router } from 'express';
+import express, { Router } from 'express';
 import { productRouter } from "./productRouter.js"
 import { cartRouter } from "./cartRouter.js"
 import { chatRouter } from "./chatRouter.js"
@@ -10,7 +10,7 @@ apiRouter.use(express.urlencoded({ extended: true }))
 
 apiRouter.use("/products", productRouter)
 apiRouter.use("/carts", cartRouter)
-apiRouter.use("/chat", chatRouter)
+apiRouter.use("/messages", chatRouter)
 
 apiRouter.use((error, req, res, next) => {
     switch (error.message) {

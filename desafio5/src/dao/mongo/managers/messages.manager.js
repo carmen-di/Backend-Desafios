@@ -1,5 +1,5 @@
 import mongoose from "mongoose"
-import { chatSchema } from "../models/chat.schema"
+import { chatSchema } from "../models/chat.schema.js"
 
 class MessagesManager {
     #messagesDb

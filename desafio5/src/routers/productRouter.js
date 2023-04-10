@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { Product } from "../entidades/Product.js"
-import { prod } from "../dao/mongo/managers/productos.manager.js"
+import { prod } from "../dao/mongo/managers/products.manager.js"
 import { randomUUID } from "crypto"
 
 export const productRouter = Router()

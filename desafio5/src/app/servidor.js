@@ -29,7 +29,7 @@ app.use('/chat', chatRouter)
 app.use('/', viewsRouter)
 app.use(error)
 
-const io = new Server(server)
+export const io = new Server(server)
 
 io.on("connection", async clientSocket => {
     console.log("nuevo cliente conectado")

@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import { prod } from '../dao/mongo/managers/products.manager';
-import { menMan } from '../dao/mongo/managers/messages.manager'
+import { prod } from '../dao/mongo/managers/products.manager.js'
+import { menMan } from '../dao/mongo/managers/messages.manager.js'
 //import mongoose from "mongoose"
 
 const RENDER_PATH = {
