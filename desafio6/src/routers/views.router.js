@@ -23,19 +23,12 @@ viewsRouter.get('/carts/:cid', async (req, res) => {
     res.render('cart')
 })
 
-viewsRouter.get('/realtimeproducts', async (req, res) => {
-    try {
-        const productosDb = mongoose.connection.db.collection('products')
-        const list = await productosDb.find().toArray()
-        
-        res.render("realtimeproducts", {
-            title: "Real Time Products",
-            list: list,
-            showList: list.length > 0
-        })
-    } catch (error) {
-        return next(error)
-    }
+viewsRouter.get("/login", async (req, res) => {
+    res.render("login")
+})
+
+viewsRouter.get("/register", async (req, res) => {
+    res.render("register")
 })
 
 viewsRouter.get('/chat', async (req, res) => {

@@ -1,4 +1,4 @@
-const socket = io()
+const socket = io('http://localhost:8080')
 
 const formCargar = document.querySelector('#formCargar')
 
@@ -19,34 +19,25 @@ if (formCargar instanceof HTMLFormElement) {
     })
 }
 
-const realTimeProducts = document.getElementById("realTimeProducts") 
+const realTimeMesseges = document.getElementById("realTimeMessages") 
 
 const template = `
-{{#if showList}}
-      <ul>
-      {{#each list}}
-            <li>
-                <h3>Title: {{this.title}}</h3>
-                <p>Price: $ {{this.price}}</p>
-                <p>Description: {{this.description}}</p>
-                <p>Code: {{this.code}}</p>
-                <p>Stock: {{this.stock}}</p>
-                <p>Category: {{this.category}}</p>
-            </li>
-      {{/each}}
-      </ul>
-{{else}}
-  <p>No hay productos...</p>
+{{#if showMessage }}
+        {{#each message}}
+            <li>{{this.user}}: {{this.message}}</li>
+        {{/each}}
+    {{else}}
+        <p>no hay mensajes...</p>
 {{/if}}
 `
 
 const armarListado = Handlebars.compile(template)
 
-serverSocket.on("updateList", data =>{
-    if (realTimeProducts !== null) {
-        realTimeProducts.innerHTML = compileTemplate({
-            list: data.list,
-            showList: data.showList
+serverSocket.on("updateMessages", data => {
+    if (realTimeMesseges !== null) {
+        realTimeMesseges.innerHTML = armarListado({
+            message: data.message,
+            showMessage: data.showMessage
         })
     }
 })

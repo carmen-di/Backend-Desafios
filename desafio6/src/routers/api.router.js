@@ -1,7 +1,7 @@
 import express, { Router } from 'express';
-import { productRouter } from "./productRouter.js"
-import { cartRouter } from "./cartRouter.js"
-import { chatRouter } from "./chatRouter.js"
+import { productRouter } from "./product.router.js"
+import { cartRouter } from "./cart.router.js"
+import { chatRouter } from "./chat.router.js"
 
 export const apiRouter = Router()
 

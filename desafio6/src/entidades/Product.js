@@ -30,9 +30,9 @@ export class Product {
         return {
             title: this.#title,
             description: this.#description,
-            price: this.#price,
+            price: Number(this.#price),
             code: this.#code,
-            stock: this.#stock,
+            stock: Number(this.#stock),
             category: this.#category,
         }
     }
