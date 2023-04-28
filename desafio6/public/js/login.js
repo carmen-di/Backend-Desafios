@@ -1,71 +1,43 @@
-const elementExists = (id) => document.getElementById(id) !== null;
+const formLogin = document.querySelector('#formLogin')
+const redirigirRegistroBtn = document.querySelector("#redirigirRegistro")
 
-elementExists('signup') &&
-    document.getElementById('signup').addEventListener('click', function () {
-        const firstName = document.getElementById('firstName').value;
-        const lastName = document.getElementById('lastName').value;
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
-        const age = document.getElementById('age').value;
+if (formLogin instanceof HTMLFormElement) {
+    formLogin.addEventListener('submit', async event => {
+        event.preventDefault()
 
-        const data = { firstName, lastName, email, password, age }
-        console.log(data)
+        const input_email = document.querySelector('#input_email')
+        const input_password = document.querySelector('#input_password')
 
-        fetch('/api/registro', {
-            method: 'POST',
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data)
-        }).then((data)=>{
-            const result = data.json();
-            console.log(result);
-            if ( data.status === 200){
+        if (
+            input_email instanceof HTMLInputElement &&
+            input_password instanceof HTMLInputElement
+        ) {
 
-                window.location.href='/api/login'
-            }else{
-                alert('El email ya existe')
+            const datosUsuario = {
+                email: input_email.value,
+                password: input_password.value,
             }
-        })
-    })
 
-const handleLogin = async (email, password) => {
-    try {
-        const response = await fetch(`login/user/?email=${email}&password=${password}`)
-        const data = await response.json()
-        return data.message
-    } catch (error) {
-        console.log(error)
-    }
-}
+            const { status } = await fetch('/api/sesiones', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(datosUsuario)
+            })
 
-
-elementExists('send') &&
-    document.getElementById('send').addEventListener('click', function () {
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
-        handleLogin(email, password).then(data => {
-            if (data === 'success') {
+            if (status === 201) {
                 window.location.href = '/products'
             } else {
-                alert('Usuario o contraseña incorrecta')
+                alert("Usuario o contraseña incorrecta, vuelva a intentar")
             }
-        })
-
-    })
-
-elementExists('logout') &&
-    document.getElementById('logout').addEventListener('click', async function () {
-        try {
-            const response = await fetch('/api/login/logout')
-            const data = await response.json()
-            console.log(data)
-            if (data.message === 'LogoutOK') {
-                window.location.href = '/api/home';
-            } else {
-                alert('logout failed')
-            }
-        } catch (error) {
-            console.log(error)
         }
     })
+}
+
+function irRegistro() {
+    window.location.href = '/register'
+}
+
+redirigirRegistroBtn.addEventListener("click", irRegistro)

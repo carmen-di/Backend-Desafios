@@ -1,9 +1,20 @@
 <h1>Login</h1>
 
-<div class="containerForm">
-  <input type="text" name="email" placeholder="email" id="email">
-  <input type="password" name="password" placeholder="Password" id="password">
-  <button id="send">Login</button>
+<form action="" id="formLogin">
+  <div>
+    <label for="input_email">Email</label>
+    <input type="text" name="email" placeholder="email" id="input_email">
+  </div>
+  <div>
+    <label for="input_password">Password</label>
+    <input type="password" name="password" placeholder="Password" id="input_password">
+  </div>
+  <button type="submit">Login</button>
+</form>
+<br/>
+<div>
+  <p>¿Aún no tienes un usuario?</p>
+  <button id="redirigirRegistro">Registrarme</button>
 </div>
 
 <script src="/js/login.js"></script>
