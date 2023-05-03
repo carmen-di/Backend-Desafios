@@ -1,8 +1,9 @@
 import passport from "passport"
 import { Strategy } from "passport-local"
-import { validarPassword } from "../crypto.js"
+import { validarPassword } from "../utils/crypto.js"
 import {Strategy as GithubStrategy} from "passport-github2"
 import { usersModel } from "../dao/mongo/models/user.schema.js"
+import { clientID, clientSecret, githubCallbackUrl } from "../config/login.config.js"
 
 passport.use('local', new Strategy({ usernameField: 'email' }, async (username, password, done) => {
     const usarioBuscado = await usersModel.findOne({ email: username }).lean()
@@ -15,22 +16,21 @@ passport.use('local', new Strategy({ usernameField: 'email' }, async (username, 
 }))
 
 passport.use('github', new GithubStrategy({
-    clientID: "Iv1.7c18323288d73e3e",
-    clientSecret: "5efda11e5a650395f9ab17bd99659b048e697385",
-    callbackURL: "http://localhost:8080/api/sessions/githubcallback"
+    clientID,
+    clientSecret,
+    callbackURL: githubCallbackUrl
 }, async (accessToken, refreshToken, profile, done) => {
     let user
     try {
-        user = await usersModel.findOne({ email: profile.username }).lean()
-        console.log(user)
-        return window.location.href = '/products'
+        const search = await usersModel.findOne({ email: profile.username }).lean()
+        user = search.user
     } catch (error) {
-        user = {
+        const newUser = {
             email: profile.username,
             name: profile.username,
             password: ""
         }
-        await usersModel.create(user)
+        user = await usersModel.create(newUser)
     }
     done(null, user)
 }))

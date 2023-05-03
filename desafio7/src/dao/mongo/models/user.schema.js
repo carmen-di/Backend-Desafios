@@ -11,3 +11,6 @@ const usersSchema = new mongoose.Schema({
 export const usersModel = mongoose.model(usersCollection, usersSchema)
 
 
+export { usersSchema }
+
+
