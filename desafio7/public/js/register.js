@@ -29,7 +29,7 @@ if (formRegister instanceof HTMLFormElement) {
                 body: JSON.stringify(datosUsuarios)
             })
         }
-        
+        irLogin()
     })
 }
 
