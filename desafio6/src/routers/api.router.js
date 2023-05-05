@@ -2,6 +2,8 @@ import express, { Router } from 'express';
 import { productRouter } from "./product.router.js"
 import { cartRouter } from "./cart.router.js"
 import { chatRouter } from "./chat.router.js"
+import { deleteSesiones, postSesiones } from "../controllers/session.controller.js"
+import { postUsuarios } from "../controllers/users.controller.js"
 
 export const apiRouter = Router()
 
@@ -11,6 +13,10 @@ apiRouter.use(express.urlencoded({ extended: true }))
 apiRouter.use("/products", productRouter)
 apiRouter.use("/carts", cartRouter)
 apiRouter.use("/messages", chatRouter)
+
+apiRouter.post("/users", postUsuarios)
+apiRouter.post("/sessions", postSesiones)
+apiRouter.delete("/sessions", deleteSesiones)
 
 apiRouter.use((error, req, res, next) => {
     switch (error.message) {

@@ -20,7 +20,7 @@ if (formRegister instanceof HTMLFormElement) {
                 password: input_password.value 
             }
 
-            await fetch("/api/usuarios", {
+            await fetch("/api/users", {
                 method: "POST",
                 headers: {
                     'Accept': 'application/json',
@@ -29,7 +29,8 @@ if (formRegister instanceof HTMLFormElement) {
                 body: JSON.stringify(datosUsuarios)
             })
         }
-        
+
+        irLogin()
     })
 }
 
