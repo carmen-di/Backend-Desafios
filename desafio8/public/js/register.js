@@ -1,5 +1,5 @@
 const formRegister = document.querySelector("#formRegister")
-const redirigirLoginBtn = document.querySelector("#redirigirLogin")
+const redirigirLogin = document.querySelector("#redirigirLogin")
 
 if (formRegister instanceof HTMLFormElement) {
     formRegister.addEventListener("submit", async event => {
@@ -26,7 +26,7 @@ if (formRegister instanceof HTMLFormElement) {
                 password: input_password.value 
             }
 
-            await fetch("/api/usuarios", {
+            await fetch("/api/users", {
                 method: "POST",
                 headers: {
                     'Accept': 'application/json',
@@ -43,4 +43,4 @@ function irLogin() {
     window.location.href = '/login'
 }
 
-redirigirLoginBtn.addEventListener("click", irLogin)
+redirigirLogin.addEventListener("click", irLogin)

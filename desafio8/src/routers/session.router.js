@@ -10,7 +10,9 @@ sessionRouter.post("/users", alreadyHasSession, postUsuarios)
 sessionRouter.post("/sessions", autenticacionUserPass, postSesiones)
 
 sessionRouter.get("/current", (req, res, next) =>{
-
+    res.render('profile', {
+        title: 'Perfil', user: req['user']
+    })
 })
 
 sessionRouter.post("/logout", deleteSesiones)

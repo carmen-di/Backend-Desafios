@@ -7,8 +7,12 @@ const usersSchema = new mongoose.Schema({
     last_name: { type: String, require: true },
     age: { type: Number, require: true },
     email:{ type: String, unique: true, require: true },
-    role: { type: String, required: true },
-    password: { type: String, require: true }
+    role: { type: String, enum: ['user', 'admin'], default: 'user'},
+    password: { type: String, require: true },
+    cart: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'carts',
+    }
 }, {versionKey: false})
 
 export const usersModel = mongoose.model(usersCollection, usersSchema)
