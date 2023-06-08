@@ -1,5 +1,5 @@
-import { productModel, productsDaoMongoose } from "../dao/mongo/products.dao.mongoose";
-import { GenericRepository } from "./GenericRepository";
+import { productModel, productsDaoMongoose } from "../dao/mongo/products.dao.mongoose.js";
+import { GenericRepository } from "./GenericRepository.js";
 
 class ProductsRepository extends GenericRepository {
     constructor(dao) { super(dao) }

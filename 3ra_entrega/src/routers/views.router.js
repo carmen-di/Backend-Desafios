@@ -7,17 +7,14 @@ export const viewsRouter = Router()
 viewsRouter.use(express.json())
 viewsRouter.use(express.urlencoded({ extended: true }))
 
-viewsRouter.get('/products', requireAuth, soloLogueadosView, async (req, res) => {
-    const userName = req.user.first_name
-    res.render('products', {title: "Productos", user: userName || "usuario"})
-})
-
-viewsRouter.get('/carts/:cid', requireAuth, soloLogueadosView, async (req, res) => {
-    res.render('cart', {title: "Carrito"})
-})
-
 viewsRouter.get("/", async (req, res) => {
     res.redirect("/login")
+})
+
+viewsRouter.get("/current", requireAuth, async (req, res) => {
+    res.render('profile', {
+        title: 'Perfil', user: req['user']
+    })
 })
 
 viewsRouter.get("/login", alreadyHasSession, async (req, res) => {
@@ -26,6 +23,21 @@ viewsRouter.get("/login", alreadyHasSession, async (req, res) => {
 
 viewsRouter.get("/register", async (req, res) => {
     res.render("register", {title: "Registro"})
+})
+
+viewsRouter.get('/products', requireAuth, soloLogueadosView, async (req, res) => {
+    const userName = req.user.first_name
+    const carrito = req.user.cart
+    res.render('products', {
+        title: "Productos", 
+        user: userName || "usuario", 
+        cartId: carrito,
+        urlToCart: `http://localhost:8080/carts/${carrito}`,
+    })
+})
+
+viewsRouter.get('/carts/:cid', requireAuth, soloLogueadosView, async (req, res) => {
+    res.render('cart', {title: "Carrito"})
 })
 
 viewsRouter.get('/chat', requireAuth, soloLogueadosView, async (req, res) => {

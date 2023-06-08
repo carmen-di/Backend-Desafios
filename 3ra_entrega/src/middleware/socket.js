@@ -1,6 +1,6 @@
 import { io } from "../app/servidor.js"
-import { prod } from "../dao/mongo/managers/products.manager.js"
-import { menMan } from "../dao/mongo/managers/messages.manager.js"
+// import { prod } from "../dao/mongo/managers/products.manager.js"
+// import { menMan } from "../dao/mongo/managers/messages.manager.js"
 
 export async function socketHandle(req, res, next) {
   const products = await prod.getProducts()

@@ -22,8 +22,8 @@ passport.use('github', new GithubStrategy({
 }, async (accessToken, refreshToken, profile, done) => {
     let user
     try {
-        const search = await usersModel.findOne({ email: profile.username }).lean()
-        user = search.user
+        user = await usersModel.findOne({ email: profile.username }).lean()
+        // user = search.user
     } catch (error) {
         const newUser = {
             email: profile.username,

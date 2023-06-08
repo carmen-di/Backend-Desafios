@@ -1,6 +1,6 @@
 import { Schema } from 'mongoose'
 import mongoose from 'mongoose'
-import { DaoMongoose } from './DaoMongoose'
+import { DaoMongoose } from './DaoMongoose.js'
 
 const cartCollection = 'carts'
 

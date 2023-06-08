@@ -1,76 +1,19 @@
 import { Router } from "express";
-import { Product } from "../entidades/Product.js"
-import { prod } from "../dao/mongo/managers/products.manager.js"
+import * as productsController from "../controllers/products.controller.js"
+import { isAdmin } from "../middleware/auth.js"
 
 export const productRouter = Router()
 
-productRouter.get('/', async (req, res, next) => {
-    const { limit, page, category, status, sort } = req.query
+productRouter.get('/', productsController.handleGet)
 
-    try {
-        let product = await prod.read(page, limit, category, status, sort)
+// obtener producto segun su id
+productRouter.get('/:pid', productsController.handleGetById)
 
-        const productExist = () => {
-            if(Boolean(product.docs)) return "success"
-            else return "error"
-        }
-        res.send({
-            status: productExist(),
-            payload: product.docs,
-            totalDocs: product.totalDocs,
-            limit: product.limit,
-            totalPages: product.totalPages,
-            page: product.page,
-            pagingCounter: product.pagingCounter,
-            hasPrevPage: product.hasPrevPage,
-            hasNextPage: product.hasNextPage,
-            prevLink: product.prevPage,
-            nextLink: product.nextPage
-        })
-    } catch (error) {
-        next(error)
-    }
-})
+// crear nuevo producto
+productRouter.post('/', isAdmin, productsController.handlePost)
 
-productRouter.get('/:pid', async (req, res, next) => {
-    try {
-        const idProducto = await prod.getProductById(req.params.pid)
-        res.json(idProducto)
-    } 
-    catch (error) {
-        next(error)
-    }
-})
+// actualizar el producto según su id
+productRouter.put('/:pid', isAdmin, productsController.handlePut)
 
-productRouter.post('/', async (req, res, next) => {
-    try {
-        const producto = new Product (req.body)
-        const add = await prod.save(producto.datos())
-        res.json(add)
-    }
-    catch (error) {
-        next(error)
-    }
-})
-
-productRouter.put('/:pid', async (req, res, next) => {
-    try {
-        const producto = new Product (req.body)
-        const prodUp = await prod.updateProduct(req.params.pid, producto.datos())
-        res.json(prodUp)
-        console.log(producto)
-    }
-    catch (error) {
-        next(error)
-    }
-})
-
-productRouter.delete('/:pid', async (req, res, next) => {
-    try {
-        const borrar = await prod.deleteProduct(req.params.pid)
-        res.json(borrar)
-    }
-    catch (error) {
-        next(error)
-    }
-})
+// eliminar producto según su id
+productRouter.delete('/:pid', isAdmin, productsController.handleDelete)

@@ -2,11 +2,12 @@ import passport from "passport"
 import { Strategy } from "passport-local"
 import { validarPassword } from "../utils/crypto.js"
 import {Strategy as GithubStrategy} from "passport-github2"
-import { usersModel } from "../dao/mongo/models/user.schema.js"
 import { clientID, clientSecret, githubCallbackUrl } from "../config/config.js"
+import { usersModel } from "../dao/mongo/users.dao.mongoose.js"
+import { usersRepository } from "../repositories/users.repository.js"
 
 passport.use('local', new Strategy({ usernameField: 'email' }, async (username, password, done) => {
-    const usarioBuscado = await usersModel.findOne({ email: username }).lean()
+    const usarioBuscado = await usersRepository.getUserByEmail(username)
     if (!usarioBuscado)
         return done(console.log("error de autenticacion"))
     if (!validarPassword(password, usarioBuscado.password))
@@ -22,7 +23,7 @@ passport.use('github', new GithubStrategy({
 }, async (accessToken, refreshToken, profile, done) => {
     let user
     try {
-        user = await usersModel.findOne({ email: profile.username }).lean()
+        user = await usersRepository.getUserByEmail(username)
     } catch (error) {
         const newUser = {
             email: profile.username,
