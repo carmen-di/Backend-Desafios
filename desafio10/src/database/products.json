@@ -1,0 +1,35 @@
+[
+  {
+    "title": "Aros Aurora",
+    "description": "Aros de bronce",
+    "price": 8000,
+    "thumbnail": [
+      "img1"
+    ],
+    "code": "code",
+    "stock": 10,
+    "category": "aros"
+  },
+  {
+    "title": "Pulsera Whitney",
+    "description": "Pulsera de oro bañado",
+    "price": 7800,
+    "thumbnail": [
+      "img2"
+    ],
+    "code": "code",
+    "stock": 10,
+    "category": "pulseras"
+  },
+  {
+    "title": "Collar Montecarlo",
+    "description": "Collar de plata",
+    "price": 8800,
+    "thumbnail": [
+      "img3"
+    ],
+    "code": "code",
+    "stock": 10,
+    "category": "collares"
+  }
+]
