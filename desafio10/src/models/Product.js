@@ -1,4 +1,5 @@
 import { newId } from "../utils/id.js"
+import { obligatorio, validarCadena, validarEnteroPositivo } from "../utils/validations.js"
 
 export class Product {
     #title
@@ -11,14 +12,25 @@ export class Product {
     #status
 
     constructor({ title, description, price, thumbnail, code = newId(), stock, category }) {
-        this.#title = title
-        this.#description = description
-        this.#price = price
-        this.#thumbnail = [thumbnail]
-        this.#code = code
-        this.#stock = stock
+        obligatorio(title, 'title')
+        this.#title = validarCadena(title, "title")
+
+        obligatorio(description, 'description')
+        this.#description = validarCadena(description, "description")
+
+        obligatorio(price, 'price')
+        this.#price = validarEnteroPositivo(price, "price")
+
         this.#status = true
-        this.#category = category
+
+        obligatorio(stock, 'stock')
+        this.#stock = validarEnteroPositivo(stock, "stock")
+
+        obligatorio(category, 'category')
+        this.#category = validarCadena(category, "category")
+
+        this.#code = code
+        this.#thumbnail = thumbnail
     }
 
     get title() { return this.#title }
