@@ -5,7 +5,6 @@ import { apiRouter } from '../routers/api.router.js'
 import { chatRouter } from '../routers/chat.router.js'
 import { viewsRouter } from '../routers/views.router.js'
 import { conectar } from '../database/mongoose.js'
-import { error } from '../middleware/errors.js'
 import { Server } from 'socket.io'
 import session from 'express-session'
 import MongoStore from "connect-mongo"
@@ -47,7 +46,6 @@ app.use('/api', apiRouter)
 app.use('/chat', chatRouter)
 app.use('/loggerTest', loggerRouter)
 app.use('/', viewsRouter)
-app.use(error)
 
 export const io = new Server(server)
 

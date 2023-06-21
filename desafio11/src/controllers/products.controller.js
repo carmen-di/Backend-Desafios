@@ -25,7 +25,8 @@ export async function handleGet(req, res, next) {
             nextLink: product.nextPage
         })
     } catch (error) {
-        next(error)
+        req.logger.error(`error getting products: ${error.message}`)
+        res.status(500).send(error.message)
     }
 }
 
@@ -34,7 +35,8 @@ export async function handleGetById(req, res, next) {
         const producto = await productosRepository.obtenerSegunId(req.params.pid)
         res.json(producto)
     } catch (error) {
-        next(error)
+        req.logger.error(`error finding products: ${error.message}`)
+        res.status(500).send(error.message)
     }
 }
 
@@ -44,7 +46,8 @@ export async function handlePost(req, res, next) {
         const productoGuardado = await productosRepository.create(producto.datos())
         res.json(productoGuardado)
     } catch (error) {
-        next(error)
+        req.logger.error(`error saving product: ${error.message}`)
+        res.status(500).send(error.message)
     }
 }
 
@@ -54,7 +57,8 @@ export async function handlePut(req, res, next) {
         const productoReemplazado = await productosRepository.updateProduct(req.params.pid, producto.datos())
         res.json(productoReemplazado)
     } catch (error) {
-        return next(error)  
+        req.logger.error(`error updating products: ${error.message}`)
+        res.status(500).send(error.message) 
     }
 }
 
@@ -63,6 +67,7 @@ export async function handleDelete(req, res, next) {
         const borrada = await productosRepository.borrarSegunId(req.params.pid)
         res.json(borrada)
     } catch (error) {
-        next(error)
+        req.logger.error(`error deleting products: ${error.message}`)
+        res.status(500).send(error.message)
     }
 }
