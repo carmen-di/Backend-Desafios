@@ -1,0 +1,54 @@
+<div>
+    <h1>Bienvenido/a {{user}}</h1>
+    <form id="formLogout">
+        <button type="submit">Logout</button>
+    </form>
+</div>
+
+<a href={{urlToCart}} data-cart={{cartId}} id="linkToCart" role="button">Ir a mi carrito</a>
+<h2>Agregar Productos</h2>
+<form method="post" id="formProductos">
+    <ul>
+        <li>
+            <label for="inputTitle">Title</label>
+            <input id="inputTitle" name="title" type="text" placeholder="Title">
+        </li>
+        <li>
+            <label for="inputDescription">Description</label>
+            <input id="inputDescription" name="description" type="text" placeholder="Description">
+        </li>
+        <li>
+            <label for="inputCode">Code</label>
+            <input id="inputCode" name="code" type="text" placeholder="Code">
+        </li>
+        <li>
+            <label for="inputPrice">Price</label>
+            <input id="inputPrice" name="price" type="text" placeholder="Price">
+        </li>
+        <li>
+            <label for="inputStock">Stock</label>
+            <input id="inputStock" name="stock" type="text" placeholder="Stock">
+        </li>
+        <li>
+            <label for="inputCategory">Category</label>
+            <input id="inputCategory" name="category" type="text" placeholder="Category">
+        </li>
+        <li>
+            <label for="inputThumbnail">Thumbnail</label>
+            <input id="inputThumbnail" name="thumbnails" type="text" placeholder="Thumbnail">
+        </li>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+    </ul>
+    <button type="submit" id="btnAgregarProducto">Agregar producto</button>
+</form>
+
+<h2>Lista de Productos</h2>
+<div id="productContainer"></div>
+
+<div class="controller-pagination">
+    <button id="prevPage-button">prev</button>
+    <input id="inputPage" type="number" value="1">
+    <button id="nextPage-button">next</button>
+</div>
+
+<script src="/js/products.js"></script>
+<script src="/socket.io/socket.io.js"></script>
