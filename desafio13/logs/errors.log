@@ -1,0 +1,5 @@
+error: Prueba de error
+error: Error obtaining a cart by id: Cast to ObjectId failed for value "6" (type string) at path "_id" for model "carts"
+error: Prueba de error
+error: Error obtaining a cart by id: Cast to ObjectId failed for value "undefined" (type string) at path "_id" for model "carts"
+error: Error obtaining a cart by id: Cast to ObjectId failed for value "undefined" (type string) at path "_id" for model "carts"
