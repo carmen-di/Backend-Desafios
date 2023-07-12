@@ -14,6 +14,8 @@ import { passportInitialize, passportSession } from '../middleware/passport.js'
 import { addLogger } from '../utils/logger.js'
 import { loggerRouter } from '../routers/logger.router.js'
 import { recoverRouter } from '../routers/recover.router.js'
+import swaggerJsdoc from 'swagger-jsdoc'
+import swaggerUiExpress from 'swagger-ui-express'
 
 await conectar()
 
@@ -22,6 +24,20 @@ const app = express()
 app.engine('handlebars', engine())
 app.set('views', './views')
 app.set('view engine', 'handlebars')
+
+const swaggerOptions = {
+    definition: {
+        openapi: "3.0.1",
+        info: {
+            title: "Documentacion de las API",
+            description: "APIs desarrolladas en el proyecto del curso de programacion backend",
+        },
+    },
+    apis: [`./src/docs/**/*.yaml`],
+};
+
+const specs = swaggerJsdoc(swaggerOptions);
+app.use("/api/docs", swaggerUiExpress.serve, swaggerUiExpress.setup(specs));
 
 app.use(express.static('./public'))
 app.use(session({
